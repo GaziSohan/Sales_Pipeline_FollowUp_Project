@@ -1,0 +1,21 @@
+opportunity_id,opportunity_name,owner_id,amount,created_at,is_test_record
+OPP-001,Northwind renewal,E001,125000,2026-01-12 09:15:00,false
+OPP-002,Contoso expansion,E002,85000,2026-02-03 11:30:00,false
+OPP-003,Fabrikam platform,E003,210000,2026-03-18 14:00:00,false
+OPP-004,Adventure Works pilot,E004,45000,2026-06-01 08:45:00,false
+OPP-005,Tailspin license,E005,67000,2026-04-12 10:20:00,false
+OPP-006,Wide World Importers,E006,300000,2026-01-25 16:10:00,false
+OPP-007,Blue Yonder upgrade,E007,92000,2026-05-05 09:00:00,false
+OPP-008,Proseware discovery,E008,28000,2026-07-11 13:05:00,false
+OPP-009,Woodgrove migration,E009,175000,2026-03-06 15:40:00,false
+OPP-010,Consolidated Messenger,E010,,2026-08-02 12:00:00,false
+OPP-011,City Power & Light,E011,110000,2026-06-15 10:00:00,false
+OPP-012,Fourth Coffee rollout,E012,76000,2026-04-28 09:30:00,false
+OPP-013,Lucerne Publishing,E404,64000,2026-05-20 11:00:00,false
+OPP-014,Coho Winery upgrade,E001,38000,2026-08-09 14:25:00,false
+OPP-015,Graphic Design Institute,E002,52000,2026-02-14 09:10:00,true
+OPP-016,Alpine Ski House,E003,145000,2026-01-19 10:40:00,false
+OPP-017,Humongous Insurance,E004,98000,2026-07-01 13:20:00,false
+OPP-018,The Phone Company,E005,41000,2026-07-14 08:00:00,false
+OPP-019,Southridge Video,E010,132000,2026-05-10 11:50:00,false
+OPP-020,School of Fine Art,E011,59000,2026-06-20 16:05:00,false

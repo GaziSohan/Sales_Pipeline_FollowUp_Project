@@ -1,0 +1,14 @@
+employee_id,employee_name,role,team_lead,is_active
+E001,Ava Patel,Sales Representative,Morgan Lee,true
+E002,Noah Kim,Sales Representative,Morgan Lee,true
+E003,Mia Garcia,Sales Manager,Morgan Lee,true
+E004,Liam Chen,Sales Representative,Jordan Smith,true
+E005,Emma Wilson,Sales Representative,Jordan Smith,true
+E006,Oliver Brown,Sales Manager,Jordan Smith,true
+E007,Sophia Davis,Sales Representative,Morgan Lee,false
+E008,James Martinez,Sales Development Representative,Morgan Lee,true
+E009,Isabella Taylor,Account Executive,Jordan Smith,true
+E010,Lucas Anderson,Sales Representative,Casey Nguyen,true
+E011,Amelia Thomas,Sales Representative,Casey Nguyen,true
+E012,Ethan Jackson,Sales Manager,Casey Nguyen,false
+E013,Harper White,Sales Operations,Morgan Lee,true

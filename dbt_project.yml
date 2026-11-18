@@ -40,3 +40,43 @@ models:
     # Applies to all files under models/example/
     example:
       +materialized: table
+
+
+vars:
+  reporting_date: '2026-08-20'
+
+seeds:
+  my_new_project:
+    +schema: raw
+    src_crm_opportunities:
+      +column_types:
+        opportunity_id: varchar
+        opportunity_name: varchar
+        owner_id: varchar
+        amount: number(18,2)
+        created_at: timestamp_ntz
+        is_test_record: boolean
+    src_crm_tasks:
+      +column_types:
+        task_id: varchar
+        opportunity_id: varchar
+        task_status: varchar
+        created_at: timestamp_ntz
+        due_date: date
+        completed_at: timestamp_ntz
+    src_opportunity_stage_history:
+      +column_types:
+        stage_event_id: integer
+        opportunity_id: varchar
+        stage_name: varchar
+        changed_at: timestamp_ntz
+    src_sales_people:
+      +column_types:
+        employee_id: varchar
+        employee_name: varchar
+        role: varchar
+        team_lead: varchar
+        is_active: boolean
+
+
+

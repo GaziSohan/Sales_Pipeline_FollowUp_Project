@@ -5,7 +5,7 @@ exposures:
     label: "Sales Pipeline Follow-up Dashboard"
     type: dashboard
     maturity: medium
-    url: https://analytics.zoho.com/
+    url: https://analytics.zoho.com/open-view/3322553000000007956/73268ae849c9374eef33fd8dc3ee57857a9fe2a441eebf73079cc8c57ae59b6b
     description: >
       Zoho Analytics dashboard for Sales Operations team leads: KPIs, team-lead
       comparison, stage bottleneck and follow-up queue.

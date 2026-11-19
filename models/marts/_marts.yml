@@ -1,0 +1,132 @@
+version: 2
+
+models:
+  - name: fct_sales_pipeline_health
+    description: >
+      One row per opportunity. Combines owner, latest stage and task activity,
+      with flags for eligibility, staleness and follow-up.
+      Reporting date = var('reporting_date').
+    semantic_model:
+      enabled: true
+      name: sales_pipeline_health
+    agg_time_dimension: opportunity_created_at
+
+    columns:
+      - name: opportunity_id
+        description: "Primary key. One row per opportunity."
+        entity:
+          name: opportunity
+          type: primary
+        data_tests: [unique, not_null]
+      - name: opportunity_name
+        description: "Opportunity name."
+      - name: owner_name
+        description: "Owner name. Null if owner not found (OPP-013)."
+        dimension:
+          type: categorical
+      - name: owner_role
+        description: "Owner role from sales people."
+        dimension:
+          type: categorical
+      - name: owner_is_active
+        description: "True if owner exists and is active. Missing owner = false."
+      - name: team_lead
+        description: "Team lead of the owner."
+        dimension:
+          type: categorical
+      - name: amount
+        description: "Opportunity amount. Null for OPP-010 (kept as null)."
+      - name: opportunity_created_at
+        description: "When the opportunity was created. Default time dimension."
+        granularity: day
+        dimension:
+          type: time
+      - name: latest_stage_name
+        description: "Most recent stage (ROW_NUMBER, tie-break on stage_event_id)."
+        dimension:
+          type: categorical
+      - name: pipeline_category
+        description: "active, on_hold, won, lost or unknown (other stage or no stage history)."
+        dimension:
+          type: categorical
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['active', 'on_hold', 'won', 'lost', 'unknown']
+      - name: latest_stage_changed_at
+        description: "Timestamp of the latest stage change."
+      - name: days_in_current_stage
+        description: "Days from latest stage change to the reporting date."
+      - name: open_task_count
+        description: "Tasks not Completed. 0 if no tasks."
+        data_tests: [not_null]
+      - name: overdue_task_count
+        description: "Open tasks with a due date before the reporting date."
+        data_tests: [not_null]
+      - name: latest_task_activity_at
+        description: "Latest completed_at; if no completed tasks, latest created_at."
+      - name: days_since_last_task_activity
+        description: "Days from latest task activity to the reporting date."
+      - name: is_eligible
+        description: "Not test record, active owner, role Sales Representative or Sales Manager, category active."
+        dimension:
+          type: categorical
+        data_tests: [not_null]
+      - name: is_stale
+        description: "Eligible and latest stage change more than 14 days before the reporting date."
+        dimension:
+          type: categorical
+        data_tests: [not_null]
+      - name: has_recent_follow_up
+        description: "Latest task activity within 14 days (inclusive) of the reporting date."
+        data_tests: [not_null]
+      - name: requires_follow_up
+        description: "Eligible and (stale or overdue tasks or no recent follow-up)."
+        dimension:
+          type: categorical
+        data_tests: [not_null]
+      - name: follow_up_reason
+        description: "Why follow-up is required, e.g. 'Stale stage, Overdue tasks'. Null if not required."
+        dimension:
+          type: categorical
+
+    metrics:
+      - name: eligible_active_pipeline_amount
+        label: "Eligible active pipeline amount"
+        description: "Total amount of eligible active opportunities (not test, active owner, Rep/Manager, active stage)."
+        type: simple
+        agg: sum
+        expr: amount
+        filter: "{{ Dimension('opportunity__is_eligible') }} = true"
+
+      - name: stale_pipeline_amount
+        label: "Stale pipeline amount"
+        description: "Amount of eligible opportunities whose latest stage change is more than 14 days before the reporting date."
+        type: simple
+        agg: sum
+        expr: amount
+        filter: "{{ Dimension('opportunity__is_stale') }} = true"
+
+      - name: stale_opportunity_count
+        label: "Stale opportunity count"
+        description: "Number of stale opportunities (stale implies eligible)."
+        type: simple
+        agg: count
+        expr: opportunity_id
+        filter: "{{ Dimension('opportunity__is_stale') }} = true"
+
+      - name: stale_pipeline_rate
+        label: "Stale pipeline rate"
+        description: "Stale pipeline amount divided by eligible active pipeline amount."
+        type: ratio
+        numerator: stale_pipeline_amount
+        denominator: eligible_active_pipeline_amount
+
+      - name: pipeline_requiring_follow_up_amount
+        label: "Pipeline requiring follow-up amount"
+        description: "Amount of eligible opportunities that are stale, have overdue tasks, or have no recent follow-up."
+        type: simple
+        agg: sum
+        expr: amount
+        filter: "{{ Dimension('opportunity__requires_follow_up') }} = true"

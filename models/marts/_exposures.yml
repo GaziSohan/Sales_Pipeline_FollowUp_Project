@@ -1,0 +1,16 @@
+version: 2
+
+exposures:
+  - name: sales_pipeline_follow_up_dashboard
+    label: "Sales Pipeline Follow-up Dashboard"
+    type: dashboard
+    maturity: medium
+    url: https://analytics.zoho.com/
+    description: >
+      Zoho Analytics dashboard for Sales Operations team leads: KPIs, team-lead
+      comparison, stage bottleneck and follow-up queue.
+    depends_on:
+      - ref('fct_sales_pipeline_health')
+    owner:
+      name: Sales Operations
+      email: sales.ops@example.com

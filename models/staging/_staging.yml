@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: stg_crm_opportunities
+    description: "One row per CRM opportunity. Renamed copy of the seed. Test records are kept."
+    columns:
+      - name: opportunity_id
+        data_tests: [unique, not_null]
+      - name: owner_id
+        description: "Known issue: OPP-013 has owner E404, which is not in sales people (warn)."
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_sales_people')
+                field: employee_id
+              config:
+                severity: warn
+
+  - name: stg_crm_tasks
+    description: "One row per CRM task. Orphan tasks (null opportunity_id) are kept here."
+    columns:
+      - name: task_id
+        data_tests: [unique, not_null]
+      - name: opportunity_id
+        description: "Known issue: T025 and T026 have no opportunity (warn). Excluded in intermediate."
+        data_tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: task_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['Completed', 'In Progress', 'Not Started']
+
+  - name: stg_opportunity_stage_history
+    description: "One row per stage change event."
+    columns:
+      - name: stage_event_id
+        data_tests: [unique, not_null]
+
+  - name: stg_sales_people
+    description: "One row per employee."
+    columns:
+      - name: employee_id
+        data_tests: [unique, not_null]
